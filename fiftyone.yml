@@ -1,6 +1,6 @@
 fiftyone:
   version: ">=0.24.0"
-name: "@jacobmarks/zero_shot_prediction"
+name: "@boubacardiallo20/prediction"
 version: "1.3.3"
 description: "Run zero-shot (open vocabulary) prediction on your data!"
 url: "https://github.com/boubacardiallo20/prediction-plugin/"
