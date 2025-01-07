@@ -1,0 +1,140 @@
+model_type: bisenetv1
+classes:
+- background
+- sugar_beet
+- monocot
+- dicot
+dataset: Mix
+loss: ohem
+max_iter: 80000
+eval_ims_per_gpu: 1
+im_anns: /media/GOG/sugar_beet/datasets/20241129T135644_GOG_20241129_sugar_beet_SS_3S_v2.0/anns
+im_root: /media/
+ims_per_gpu: 8
+lr_start: 0.002
+lite: true
+mode: train
+norm_type: imagenet
+num_workers: 4
+val_set: val
+use_fp16: true
+lrsch: M
+use_sync_bn: true
+warmup_iters: 1000
+weight_decay: 0.0005
+spatial_path: false
+num_aux_heads: 2
+fix_res: true
+local_rank: 0
+cropsize:
+- 1024
+- 1024
+eval_crop:
+- 1024
+- 1024
+seed: 1234
+augmentations:
+  cjitter:
+    brightness: 0.5
+    contrast: 0.5
+    saturation: 0.5
+    prob: 0.5
+    rand: true
+    seed: 1234
+  crop:
+    crop:
+    - 150
+    - 250
+    - 1300
+    - 1300
+    seed: 1234
+  flip_h:
+    prob: 0.5
+    seed: 1234
+  resize_aspect:
+    size:
+    - 1024
+    - 1024
+    seed: 1234
+  gaussblur:
+    gblur: 3.0
+    prob: 0.5
+    rand: false
+    seed: 1234
+  affine:
+    scale: 1.0
+    translate_px: 0
+    rotate: 45
+    shear: 0
+    prob: 0.3
+    seed: 1234
+augmentations_val:
+  crop:
+    crop:
+    - 150
+    - 250
+    - 1300
+    - 1300
+    seed: 1234
+  resize_aspect:
+    size:
+    - 1024
+    - 1024
+    seed: 1234
+post_process:
+  unresize_aspect:
+    size:
+    - 1300
+    - 1300
+  uncrop: None
+deepsupervision: true
+backbone: STDC
+qat: true
+early_stopping:
+  enabled: false
+  patience: 5
+  metric: val_loss
+mlflow:
+  mlflow_tracking_enabled: true
+  mlflow_tracking_uri: http://127.0.0.1:8081
+  mlflow_experiment_name: GOG_SUGARBEET_SS_3S
+hyperparameter_search:
+  enable: false
+  n_trials: 3
+  direction: maximize
+  optimization_method: TPE
+  parameters:
+    lr_start:
+      type: loguniform
+      low: 1e-3
+      high: 1e-1
+  pruner:
+    name: MedianPruner
+    pruner_params:
+      n_startup_trials: 5
+      n_warmup_steps: 30
+      interval_steps: 10
+experiments:
+- name: Experiment 1
+  runs: 5
+  parameters:
+    lr_start: 0.01
+    num_aux_heads: 2
+  visualistaion: confidence_band
+- name: Experiment 2
+  runs: 5
+  parameters:
+    lr_start: 0.001
+    num_aux_heads: 3
+add: MD_FT
+train_set: train
+tune_hyperp: false
+max_batch: 10000
+warmup_iters_batch: 125
+lb_ignore: 255
+training_debug: true
+skip_layers:
+- conv_out
+- conv_out16
+- conv_out32
+finetune_from: /media/buckets/traininggog/bucket-traininggog/GOG/sugar_beet_SS_3S/20240415_specialized_models/datasets/0000_GOG_SugarBeet_Sony_3S_specialized_set_w_optional_ds_PAD__20240415T1816/models/B1/STDC/GOG_STDCB1_NSP_fix_it80000_lr0.002__D0000_W2_R1024_v3/GOG_STDCB1_NSP_fix_it80000_lr0.002__D0000_W2_R1024_miou_it9000_best0.6434.pth
