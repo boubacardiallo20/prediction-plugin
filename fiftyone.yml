@@ -3,7 +3,7 @@ fiftyone:
 name: "@jacobmarks/zero_shot_prediction"
 version: "1.3.3"
 description: "Run zero-shot (open vocabulary) prediction on your data!"
-url: "https://github.com/jacobmarks/zero-shot-predictions-plugin/"
+url: "https://github.com/boubacardiallo20/prediction-plugin/"
 operators:
   - zero_shot_predict
   - zero_shot_classify
